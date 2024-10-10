@@ -56,6 +56,37 @@ class DemoApiViewModel(private val todoService: TodoService) : ViewModel() {
                 _mutableLiveData.value = TodoUiState.Error(throwable)
             }
         }
+    }
+    fun getUsersSuspend(){
+        _mutableLiveData.value = TodoUiState.Loading
+        viewModelScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    todoService.getUsersSuspend()
+                }
+                _mutableLiveData.value = TodoUiState.SuccessList(result)
+            } catch (cancel: CancellationException) {
+                throw cancel
+            } catch (throwable: Throwable) {
+                _mutableLiveData.value = TodoUiState.Error(throwable)
+            }
+        }
+    }
 
+    fun postUsersSuspend(){
+        _mutableLiveData.value = TodoUiState.Loading
+        val demoPostRequest = PostTodoRequest("RxMobileTeam","Android",1)
+        viewModelScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    todoService.postUserSuspend(demoPostRequest)
+                }
+                _mutableLiveData.value = TodoUiState.SuccessPost(result)
+            } catch (cancel: CancellationException) {
+                throw cancel
+            } catch (throwable: Throwable) {
+                _mutableLiveData.value = TodoUiState.Error(throwable)
+            }
+        }
     }
 }

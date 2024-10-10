@@ -48,10 +48,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(libs.moshi)
-
     implementation(libs.gson)
 
+    //retrofit
     val retrofitVersion = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
@@ -60,4 +59,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
 
+    //moshi
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
 }

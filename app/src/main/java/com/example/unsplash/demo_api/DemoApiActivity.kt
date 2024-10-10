@@ -29,7 +29,7 @@ class DemoApiActivity : AppCompatActivity() {
 //        StrictMode.setThreadPolicy(policy)
 
         binding.button.setOnClickListener {
-            viewModel.getTodoSuspend()
+            viewModel.postUsersSuspend()
         }
 
 
@@ -43,6 +43,12 @@ class DemoApiActivity : AppCompatActivity() {
                 }
                 is TodoUiState.Success -> {
                     binding.textView.text = result.todo.title
+                }
+                is TodoUiState.SuccessList -> {
+                    binding.textView.text = result.items.joinToString { it.name }
+                }
+                is TodoUiState.SuccessPost -> {
+                    binding.textView.text = result.post.toString()
                 }
             }
         }
