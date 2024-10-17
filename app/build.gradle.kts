@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -18,6 +20,25 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            val properties = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+            val unsplashClientId = checkNotNull(properties["UNSPLASH_CLIENT_ID"]){
+                "Please define UNSPLASH_ACCESS_KEY in local.properties"
+            }
+
+
+            buildConfigField(
+                type = "String",
+                name = "UNSPLASH_CLIENT_ID",
+                value = """"$unsplashClientId""""
+            )
+        }
+
+
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -35,6 +56,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -54,6 +76,8 @@ dependencies {
     val retrofitVersion = "2.11.0"
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion")
 
     //coroutine
     implementation(libs.kotlinx.coroutines.core)
@@ -62,4 +86,18 @@ dependencies {
     //moshi
     implementation("com.squareup.moshi:moshi:1.15.1")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
+
+    val fragment_version = "1.8.4"
+
+    // Java language implementation
+    implementation("androidx.fragment:fragment:$fragment_version")
+    // Kotlin
+    implementation("androidx.fragment:fragment-ktx:$fragment_version")
 }

@@ -23,6 +23,10 @@ class DemoMoshiGsonViewModel(application: Application) : AndroidViewModel(applic
     private val moshi by lazy { buildMoshi() }
     private val gson by lazy { buildGson() }
 
+    private val todoApiService by lazy {
+        createTodoApiService()
+    }
+
     private val _stateLiveData = MutableLiveData<String?>(null)
     val stateLiveData: LiveData<String?> get() = _stateLiveData
 
@@ -31,7 +35,7 @@ class DemoMoshiGsonViewModel(application: Application) : AndroidViewModel(applic
             _stateLiveData.value = "Loading"
 
             try {
-                _stateLiveData.value = parseJsonInternal()
+                _stateLiveData.value = todoApiService.getTodos().toString()
                 Log.d(TAG, "Parse json successfully")
             } catch (cancel: CancellationException) {
                 throw cancel
